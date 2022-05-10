@@ -6,21 +6,26 @@
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v3.2.7/dist/aframe-extras.min.js"></script>
   </head>
   <body>
-    <a-scene stats>
+    <a-scene>
 
-      <!-- CAMERA -->
-      <a-entity position="0 0 0" id="pov">
-        <a-camera camera="active: true; spectator: false;" look-controls="pointerLockEnabled:true" universal-controls="movementControls: checkpoint;" checkpoint-controls="mode: animate; animateSpeed: 10" wasd-controls="enabled: false;" position="0 1.6 22">
-          <a-cursor></a-cursor>
-        </a-camera>
-      </a-entity>
+	<a-entity position="0 0 0" id="pov">
+		<a-camera position="0 0 24" universal-controls="movementControls: checkpoint" checkpoint-controls="mode: animate">
+			<a-entity cursor position="0 0 -1" geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03;" material="color: #CCC; shader: flat;">
+		</a-camera>
+	</a-entity>
 
-      <!-- CHECKPOINTS -->
-      <a-cylinder checkpoint radius="0.5" height="0.01" position="0 0 20" color="#FF0000"></a-cylinder>
-      <a-cylinder checkpoint radius="0.5" height="0.01" position="0 0 16" color="#FF0000"></a-cylinder>
-      <a-cylinder checkpoint radius="0.5" height="0.01" position="0 0 12" color="#FF0000"></a-cylinder>
-      <a-cylinder checkpoint radius="0.5" height="0.01" position="0 0 8" color="#FF0000"></a-cylinder>
+	<a-entity id="cabin">
+		<a-entity id="floor" geometry="primitive: plane; height: 49.9; width: 6.50" material="color:#a8a8a8;" rotation="-90 0 0"></a-entity>
+		<a-entity id="left-wall" geometry="primitive: plane; height: 3; width: 49.5" position="-3.25 1.50 0" material="color:#a8a8a8;" rotation="0 90 0"></a-entity>
+		<a-entity id="right-wall" geometry="primitive: plane; height: 3; width: 49.5" position="3.25 1.50 0" material="color:#a8a8a8;" rotation="0 270 0"></a-entity>
+    </a-entity>
+    
+    
+    <a-cylinder checkpoint radius="0.5" height="0.01" position="0 0 20" color="#39BB82"></a-cylinder>
+    <a-cylinder checkpoint radius="0.5" height="0.01" position="0 0 16" color="#39BB82"></a-cylinder>
+    <a-cylinder checkpoint radius="0.5" height="0.01" position="0 0 12" color="#39BB82"></a-cylinder>
+    <a-cylinder checkpoint radius="0.5" height="0.01" position="0 0 8" color="#39BB82"></a-cylinder>
 
-    </a-scene>
+</a-scene>
   </body>
 </html>
