@@ -1,1 +1,42 @@
 
+
+  <!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Hypnos-phi/aframe-extras@vvr-controller-rotation/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+  <a-box class="box" hoverable grabbable stretchable draggable dropppable color="blue" position="-28 2 -7"></a-box>
+           
+      <a-sphere class="box" hoverable grabbable stretchable draggable dropppable color="red" position="-28 2 -4"></a-sphere>
+   <a-entity id="rig" movement-controls="constrainToNavMesh: false">
+        <a-entity
+          camera
+          position="-5 3 0"
+          look-controls="pointerLockEnabled: true"
+        ></a-entity>
+
+         <a-entity sphere-collider="objects: .box" super-hands hand-controls="hand: left"></a-entity>
+      <a-entity sphere-collider="objects: .box" super-hands hand-controls="hand: right"></a-entity>
+     
+      </a-entity>
+        <a-assets>
+    <a-asset-item id="tree" src="marskivaunuoptimoitu.glb"></a-asset-item>
+  </a-assets>
+        <a-assets>
+    <a-asset-item id="tree2" src="tuoli.glb"></a-asset-item>
+  </a-assets>
+       <a-assets>
+    <a-asset-item id="tree3" src="lasit.glb"></a-asset-item>
+  </a-assets>
+  <a-entity gltf-model="#tree" position="-28 -4 -9"></a-entity>
+  <a-entity grabbable stretchable dropppable gltf-model="#tree2" position="-27 -2 -3" class="box"></a-entity>     
+      <a-entity grabbable stretchable dropppable gltf-model="#tree3" position="-27 -2 -5" class="box"></a-entity>  
+      <a-sky color="#ECECEC"></a-sky>
+    </a-scene>
+  </body>
+</html>
