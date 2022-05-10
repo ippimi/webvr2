@@ -1,46 +1,224 @@
-
-
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/Hypnos-phi/aframe-extras@vvr-controller-rotation/dist/aframe-extras.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-    <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+    <meta charset="utf-8" />
+    <title>Winter Snowscape</title>
+    <meta name="description" content="Winter Snowscape" />
+
+    <!--    Place the script for aframe here     -->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+
+    <!--     Place the script for aframe extras here -->
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.0/dist/aframe-extras.js"></script>
+    <script src="movement-controls.js"></script>
+    <!--     Place the script for the environment component here -->
+    <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+
+    <!--     Place the script for the particle system component here -->
+    <script src="https://unpkg.com/aframe-particle-system-component@1.1.3/dist/aframe-particle-system-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+
+    <script>
+      AFRAME.registerSystem("goto", {
+        init: function() {
+          // global - shared between all goto components
+          this.isMoving = false;
+        }
+      });
+
+      AFRAME.registerComponent("goto", {
+        init: function() {
+          let rig = document.querySelector('#pov')
+          rig.addEventListener('animationcomplete', e=> {
+            this.system.isMoving = false
+          })
+          this.el.addEventListener("click", e => {
+            if (this.system.isMoving) return;
+            let targetPos = this.el.getAttribute("position")
+            let rigPos = rig.getAttribute("position")
+            this.system.isMoving = true
+            
+            rig.setAttribute("animation", {
+              "from": rigPos,
+              "to": AFRAME.utils.coordinates.stringify({x: targetPos.x, y: rigPos.y, z: targetPos.z}),
+              "dur": targetPos.distanceTo(rigPos) * 750
+            })
+            rig.emit('go')
+          });
+        }
+      });
+    </script>
   </head>
   <body>
-    <a-scene physics>
-  <a-box class="box" hoverable grabbable stretchable draggable dropppable color="blue" position="-28 2 -7"></a-box>
-           
-      <a-sphere class="box" hoverable grabbable stretchable draggable dropppable color="red" position="-28 2 -4"></a-sphere>
-   <a-entity id="rig" movement-controls="constrainToNavMesh: false">
-        <a-entity
-          camera
-          position="-5 3 0"
-          look-controls="pointerLockEnabled: true"
-        ></a-entity>
-
-         <a-entity sphere-collider="objects: .box" super-hands hand-controls="hand: left" mixin="physics-hands" ></a-entity>
-      <a-entity sphere-collider="objects: .box" super-hands hand-controls="hand: right" mixin="physics-hands"></a-entity>
-     
+    <a-scene>
+      <a-entity position="1.8 -1.1 3" rotation="0 90 0" id="pov" animation="property: position; startEvents: go">
+        <a-camera look-controls wasd-controls-enabled="false">
+          <a-entity
+            cursor
+            position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015;"
+            material="color: #CCC; shader: flat;">
+          </a-entity>
+        </a-camera>
       </a-entity>
-        <a-assets>
-    <a-asset-item id="tree" src="marskivaunuoptimoitu.glb"></a-asset-item>
-  </a-assets>
-        <a-assets>
-    <a-asset-item id="tree2" src="tuoli.glb"></a-asset-item>
-  </a-assets>
-       <a-assets>
-    <a-asset-item id="tree3" src="lasit.glb"></a-asset-item>
-  </a-assets>
-  <a-entity gltf-model="#tree" position="-28 -4 -9"></a-entity>
-  <a-entity grabbable stretchable dropppable gltf-model="#tree2" position="-27 -2 -3" class="box"></a-entity>     
-      <a-entity grabbable stretchable dropppable gltf-model="#tree3" position="-27 -2 -5" class="box"></a-entity>  
-      <a-sky color="#ECECEC"></a-sky>
+
+      <a-assets>
+        <!--   add your assets (3d models) here -->
+        <a-asset-item
+          id="museum_model"
+          src="https://cdn.glitch.com/5b6e9f0e-c058-4beb-a00c-d3db2a77d637%2Fmuseum_map_shell.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="tree"
+          src="https://cdn.glitch.com/4a4cbc6d-1a3e-4762-8743-14d05d3e7d51%2Fchristmas_tree.glb"
+        ></a-asset-item>
+      </a-assets>
+
+      <!--  add your environment here -->
+      <a-entity
+        environment="ground: flat;groundColor: black; groundTexture: none; groundYScale: 0; lighting: none;"
+      ></a-entity>
+
+      <a-entity
+        position="0 50 0"
+        light="type:hemisphere; color:white; groundColor:white; intensity:1.5"
+      ></a-entity>
+
+      <a-entity
+        position="-.1 1 1"
+        light="type:directional;intensity:0.5"
+      ></a-entity>
+
+      <!--   add your 3d models here -->
+      <a-entity gltf-model="#museum_model" scale=".05 .05 .05" position="0 0 0">
+      </a-entity>
+
+      <a-box
+        position="-4.115 0.5 2.238"
+        radius="0.5"
+        scale="0.490 1 1"
+        color="gray"
+        event-set__enter="_event: mouseenter; _target: #cylinderText; visible: true"
+        event-set__leave="_event: mouseleave; _target: #cylinderText; visible: false"
+      >
+        <a-text
+          id="cylinderText"
+          value="Exhibit 1"
+          align="center"
+          color="#FFF"
+          visible="false"
+          rotation="0 90 0"
+          position="0.6 0 0"
+          scale="0.490 0.5 1"
+          geometry="primitive: plane; width: 1.75"
+          material="color: #333"
+        ></a-text>
+      </a-box>
+
+      <a-box
+        position="-4.115 0.5 0.661"
+        radius="0.5"
+        scale="0.490 1 1"
+        color="gray"
+        event-set__enter="_event: mouseenter; _target: #cylinderText2; visible: true"
+        event-set__leave="_event: mouseleave; _target: #cylinderText2; visible: false"
+      >
+        <a-text
+          id="cylinderText2"
+          value="Exhibit 2"
+          align="center"
+          color="#FFF"
+          visible="false"
+          rotation="0 90 0"
+          position="0.6 0 0"
+          scale="0.490 0.5 1"
+          geometry="primitive: plane; width: 1.75"
+          material="color: #333"
+        ></a-text>
+      </a-box>
+
+      <a-box
+        position="-4.115 0.5 -0.965"
+        radius="0.5"
+        scale="0.490 1 1"
+        color="gray"
+        event-set__enter="_event: mouseenter; _target: #cylinderText3; visible: true"
+        event-set__leave="_event: mouseleave; _target: #cylinderText3; visible: false"
+      >
+        <a-text
+          id="cylinderText3"
+          value="Exhibit 3"
+          align="center"
+          color="#FFF"
+          visible="false"
+          rotation="0 90 0"
+          position="0.6 0 0"
+          scale="0.490 0.5 1"
+          geometry="primitive: plane; width: 1.75"
+          material="color: #333"
+        ></a-text>
+      </a-box>
+
+      <a-box
+        position="-4.115 0.5 -2.414"
+        radius="0.5"
+        scale="0.490 1 1"
+        color="gray"
+        event-set__enter="_event: mouseenter; _target: #cylinderText4; visible: true"
+        event-set__leave="_event: mouseleave; _target: #cylinderText4; visible: false"
+      >
+        <a-text
+          id="cylinderText4"
+          value="Exhibit 4"
+          align="center"
+          color="#FFF"
+          visible="false"
+          rotation="0 90 0"
+          position="0.6 0 0"
+          scale="0.490 0.5 1"
+          geometry="primitive: plane; width: 1.75"
+          material="color: #333"
+        ></a-text>
+      </a-box>
+
+      <a-box
+        position="-0.095 0.531 1.443"
+        radius="2"
+        rotation="180 -90 180"
+        scale="0.047 0.472 0.904"
+        color="gray"
+      >
+        <a-text
+          id="welcome"
+          value="Welcome!"
+          align="center"
+          color="black"
+          rotation="0 -90 0"
+          position="-0.571 0 0"
+          scale="0.490 0.5 1"
+          geometry="primitive: plane; width: 1.75"
+          material="color: gray"
+        ></a-text>
+      </a-box>
+
+      <!--<a-cylinder position="-0.164 0.111 2.363" radius="0.5" rotation=" 0 0 0" scale="0.2 0.015 0.2" color="gray"> </a-cylinder> -->
+      <a-cylinder
+        goto
+        radius="0.1.5"
+        height="0.01"
+        position="-0.164 0.111 2.363"
+        color="#39BB82"
+      ></a-cylinder>
+      
+      <a-cylinder
+        goto
+        radius="0.1.5"
+        height="0.01"
+        position="-2.364 0.111 1.363"
+        color="#39BB82"
+      ></a-cylinder>
     </a-scene>
+        <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
   </body>
 </html>
