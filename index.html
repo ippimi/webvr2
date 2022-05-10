@@ -7,9 +7,13 @@
     <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/Hypnos-phi/aframe-extras@vvr-controller-rotation/dist/aframe-extras.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
   </head>
   <body>
-    <a-scene>
+    <a-scene physics>
   <a-box class="box" hoverable grabbable stretchable draggable dropppable color="blue" position="-28 2 -7"></a-box>
            
       <a-sphere class="box" hoverable grabbable stretchable draggable dropppable color="red" position="-28 2 -4"></a-sphere>
@@ -20,8 +24,8 @@
           look-controls="pointerLockEnabled: true"
         ></a-entity>
 
-         <a-entity sphere-collider="objects: .box" super-hands hand-controls="hand: left"></a-entity>
-      <a-entity sphere-collider="objects: .box" super-hands hand-controls="hand: right"></a-entity>
+         <a-entity sphere-collider="objects: .box" super-hands hand-controls="hand: left" mixin="physics-hands" ></a-entity>
+      <a-entity sphere-collider="objects: .box" super-hands hand-controls="hand: right" mixin="physics-hands"></a-entity>
      
       </a-entity>
         <a-assets>
