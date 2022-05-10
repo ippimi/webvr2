@@ -8,8 +8,8 @@
   <body>
     <a-scene>
 
-	<a-entity position="0 0 0" id="pov">
-		<a-camera position="0 0 24" universal-controls="movementControls: checkpoint" checkpoint-controls="mode: animate">
+	<a-entity position="0 0 0" id="rig">
+		<a-camera position="0 1.6 24" movement-controls="controls: checkpoint" checkpoint-controls="mode: animate" look-controls="pointerLockEnabled: true>
 			<a-entity cursor position="0 0 -1" geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03;" material="color: #CCC; shader: flat;">
 		</a-camera>
 	</a-entity>
